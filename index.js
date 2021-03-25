@@ -29,16 +29,16 @@ client.on('message', async message => {
 			.setColor('#25d955')
 			.setTitle('Help')
 			.addFields(
-		{ name: '?RegSK', value:  `Gibt Inzidenz von SK Regensburg wieder`},
-		{ name: '?RegLK', value: `Gibt Inzidenz von LK Regensburg wieder` },
-		{ name: '?Mun', value: `Gibt Inzidenz von SK München wieder` },
-		{ name: '?Keh', value: `Gibt Inzidenz von LK Kelheim wieder` },
+		{ name: '?regsk', value:  `Gibt Inzidenz von SK Regensburg wieder`},
+		{ name: '?reglk', value: `Gibt Inzidenz von LK Regensburg wieder` },
+		{ name: '?mun', value: `Gibt Inzidenz von SK München wieder` },
+		{ name: '?keh', value: `Gibt Inzidenz von LK Kelheim wieder` },
 	);
 
 	message.channel.send(embed);
 	} 
 
-	if(command === 'RegSK') {
+	if(command === 'regsk') {
 		let getIn = async () => {
 			let response = await fetch('https://api.corona-zahlen.org/districts/09362')
 			let In = await response.json()
@@ -57,7 +57,8 @@ client.on('message', async message => {
 	message.channel.send(embed);
 	}
 
-	if(command === 'RegLK') {
+	
+	if(command === 'reglk') {
 		let getIn = async () => {
 			let response = await fetch('https://api.corona-zahlen.org/districts/09375')
 			let In = await response.json()
@@ -76,7 +77,7 @@ client.on('message', async message => {
 	message.channel.send(embed);
 	}
 
-	if(command === 'Mun') {
+	if(command === 'mun') {
 		let getIn = async () => {
 			let response = await fetch('https://api.corona-zahlen.org/districts/09162')
 			let In = await response.json()
@@ -95,7 +96,7 @@ client.on('message', async message => {
 	message.channel.send(embed);
 	}
 
-	if(command === 'Keh') {
+	if(command === 'keh') {
 		let getIn = async () => {
 			let response = await fetch('https://api.corona-zahlen.org/districts/09273')
 			let In = await response.json()
@@ -112,5 +113,5 @@ client.on('message', async message => {
 	);
 
 	message.channel.send(embed);
-	}
+	} 
 });
