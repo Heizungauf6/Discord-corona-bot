@@ -1,0 +1,25 @@
+{
+  "name": "deutschland-inzidenz",
+  "version": "1.0.0",
+  "description": "Discord Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "keywords": [
+    "Bot",
+    "Discord"
+  ],
+  "author": "Heizungauf6",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "discord.io": "^2.5.3",
+    "discord.js": "^12.5.1",
+    "discord.js-commando": "^0.12.2",
+    "dotenv": "^8.2.0",
+    "node-fetch": "^2.6.1",
+    "node-rest-client": "^3.1.0",
+    "winston": "^3.3.3"
+  }
+}
