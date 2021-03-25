@@ -18,6 +18,7 @@
     "discord.js": "^12.5.1",
     "discord.js-commando": "^0.12.2",
     "dotenv": "^8.2.0",
+    "landkreise-deutschland": "^3.0.0",
     "node-fetch": "^2.6.1",
     "node-rest-client": "^3.1.0",
     "winston": "^3.3.3"
