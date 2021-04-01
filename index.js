@@ -3,6 +3,7 @@ const client = new Discord.Client();
 const { prefix } = require('./config.json');
 const { token } = require('./token.json');
 const fetch = require('node-fetch');
+const { getDistrictByNameAndType } = require("./node_modules/landkreise-deutschland/lib/index");
 
 client.once('ready', () => {
 	console.log('Ready!');
@@ -12,6 +13,11 @@ client.once('ready', () => {
 });
 
 client.login(token);
+
+
+client.on("error", (e) => console.error(e));
+client.on("warn", (e) => console.warn(e));
+client.on("debug", (e) => console.info(e));
 
 client.on('message', message => {
 	console.log(message.content);
@@ -29,89 +35,33 @@ client.on('message', async message => {
 			.setColor('#25d955')
 			.setTitle('Help')
 			.addFields(
-		{ name: '?regsk', value:  `Gibt Inzidenz von SK Regensburg wieder`},
-		{ name: '?reglk', value: `Gibt Inzidenz von LK Regensburg wieder` },
-		{ name: '?mun', value: `Gibt Inzidenz von SK München wieder` },
-		{ name: '?keh', value: `Gibt Inzidenz von LK Kelheim wieder` },
+		{ name: '?in', value: `?in <Stadt> <Landkreis/Stadt>` },
 	);
 
 	message.channel.send(embed);
 	} 
 
-	if(command === 'regsk') {
+	if (command === 'in') {
+		if (!args.length) {
+			return message.channel.send(`Du hast keinen Landkreis angegeben, ${message.author}!`);
+		}
+		const district = getDistrictByNameAndType(`${args[0]}`, `${args[1]}`);
 		let getIn = async () => {
-			let response = await fetch('https://api.corona-zahlen.org/districts/09362')
+			let response = await fetch(`https://api.corona-zahlen.org/districts/${district.AGS}`)
 			let In = await response.json()
 			return In
 		}
 		let InValue = await getIn()
-		someint = InValue.data["09362"].weekIncidence
+		someint = InValue.data[`${district.AGS}`].weekIncidence
 		const embed = new Discord.MessageEmbed()
 			.setColor('#EFFF00')
-			.setTitle('SK Regensburg, Bayern')
+			.setTitle(`${args[0]}, ${args[1]}`)
 			.addFields(
 		{ name: 'Inzidenz', value:  someint.toFixed(2)},
 		{ name: 'Quelle', value: `${InValue.meta.source}` },
-	);
+	); 
 
 	message.channel.send(embed);
+
 	}
-
-	
-	if(command === 'reglk') {
-		let getIn = async () => {
-			let response = await fetch('https://api.corona-zahlen.org/districts/09375')
-			let In = await response.json()
-			return In
-		}
-		let InValue = await getIn()
-		someint = InValue.data["09375"].weekIncidence
-		const embed = new Discord.MessageEmbed()
-			.setColor('#EFFF00')
-			.setTitle('LK Regensburg, Bayern')
-			.addFields(
-		{ name: 'Inzidenz', value:  someint.toFixed(2)},
-		{ name: 'Quelle', value: `${InValue.meta.source}` },
-	);
-
-	message.channel.send(embed);
-	}
-
-	if(command === 'mun') {
-		let getIn = async () => {
-			let response = await fetch('https://api.corona-zahlen.org/districts/09162')
-			let In = await response.json()
-			return In
-		}
-		let InValue = await getIn()
-		someint = InValue.data["09162"].weekIncidence
-		const embed = new Discord.MessageEmbed()
-			.setColor('#EFFF00')
-			.setTitle('SK München, Bayern')
-			.addFields(
-		{ name: 'Inzidenz', value:  someint.toFixed(2)},
-		{ name: 'Quelle', value: `${InValue.meta.source}` },
-	);
-
-	message.channel.send(embed);
-	}
-
-	if(command === 'keh') {
-		let getIn = async () => {
-			let response = await fetch('https://api.corona-zahlen.org/districts/09273')
-			let In = await response.json()
-			return In
-		}
-		let InValue = await getIn()
-		someint = InValue.data["09273"].weekIncidence
-		const embed = new Discord.MessageEmbed()
-			.setColor('#EFFF00')
-			.setTitle('LK Kelheim')
-			.addFields(
-		{ name: 'Inzidenz', value:  someint.toFixed(2)},
-		{ name: 'Quelle', value: `${InValue.meta.source}` },
-	);
-
-	message.channel.send(embed);
-	} 
-});
+}); 
