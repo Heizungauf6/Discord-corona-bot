@@ -51,6 +51,9 @@ client.on('message', async message => {
 		
 
 	if (command === 'in') {
+
+		const Filter = (reaction, user) => user.id == message.author.id;
+
 		if (!args.length) {
 			return message.channel.send(`Du hast keinen Landkreis angegeben, ${message.author}!`);
 		}
@@ -75,9 +78,20 @@ client.on('message', async message => {
 			.setTitle(`${district.name}, ${district.type}`)
 			.addFields(
 		{ name: 'Inzidenz', value:  someint.toFixed(2)},
-		{ name: 'Quelle', value: `${InValue.meta.source}` },
-		); 
+		{ name: 'Quelle', value: `${InValue.meta.source}`})
+			.setFooter('📈 Diagram 🚫 Maßnahmen')
+			.setTimestamp(); 
 
-		message.channel.send(embed);
+		message.channel.send(embed).then(sentEmbed => {
+			sentEmbed.react("📈")
+			sentEmbed.react("🚫")
+		})
+
+
+
+
+
+
+
 	}
 }); 
