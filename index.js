@@ -35,7 +35,8 @@ client.on('message', async message => {
 			.setColor('#25d955')
 			.setTitle('Help')
 			.addFields(
-		{ name: '?in', value: `?in <Stadt> <Landkreis/Stadt>` },
+		{ name: `${prefix}in`, value: `${prefix}in <Stadt> <Landkreis/Stadt>` },
+		{ name: `${prefix}add`, value: `${prefix}add Gives you the invite Link for the Bot :)` },
 	);
 
 	message.channel.send(embed);
