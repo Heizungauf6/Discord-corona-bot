@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const { prefix } = require('./config.json');
 const { token } = require('./token.json');
+const { reinvite } = require('./token.json');
 const fetch = require('node-fetch');
 const { getDistrictByNameAndType } = require("./node_modules/landkreise-deutschland/lib/index");
 
@@ -18,11 +19,6 @@ client.login(token);
 client.on("error", (e) => console.error(e));
 client.on("warn", (e) => console.warn(e));
 client.on("debug", (e) => console.info(e));
-
-client.on('message', message => {
-	console.log(message.content);
-});
-
 
 client.on('message', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -41,6 +37,18 @@ client.on('message', async message => {
 
 	message.channel.send(embed);
 	} 
+
+	if(command === 'add') {
+		const embed = new Discord.MessageEmbed()
+			.setColor('#34ebd8')
+			.setTitle(`${prefix}add`)
+			.addFields(
+		{ name: `Link:`, value: `${reinvite}` },
+	);
+
+	message.channel.send(embed);
+	} 
+		
 
 	if (command === 'in') {
 		if (!args.length) {
