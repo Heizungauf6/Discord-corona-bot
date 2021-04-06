@@ -45,6 +45,14 @@ client.on('message', async message => {
 		if (!args.length) {
 			return message.channel.send(`Du hast keinen Landkreis angegeben, ${message.author}!`);
 		}
+
+		if (getDistrictByNameAndType(`${args[0]}`, `${args[1]}`) == null)
+		{
+			return message.channel.send(`Dieser Landkreis existiert nicht, ${message.author}!`);
+		}
+
+
+
 		const district = getDistrictByNameAndType(`${args[0]}`, `${args[1]}`);
 		let getIn = async () => {
 			let response = await fetch(`https://api.corona-zahlen.org/districts/${district.AGS}`)
@@ -55,13 +63,12 @@ client.on('message', async message => {
 		someint = InValue.data[`${district.AGS}`].weekIncidence
 		const embed = new Discord.MessageEmbed()
 			.setColor('#EFFF00')
-			.setTitle(`${args[0]}, ${args[1]}`)
+			.setTitle(`${district.name}, ${district.type}`)
 			.addFields(
 		{ name: 'Inzidenz', value:  someint.toFixed(2)},
 		{ name: 'Quelle', value: `${InValue.meta.source}` },
-	); 
+		); 
 
-	message.channel.send(embed);
-
+		message.channel.send(embed);
 	}
 }); 
