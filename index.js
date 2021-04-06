@@ -32,7 +32,7 @@ client.on('message', async message => {
 			.setTitle('Help')
 			.addFields(
 		{ name: `${prefix}in`, value: `${prefix}in <Stadt> <Landkreis/Stadt>` },
-		{ name: `${prefix}add`, value: `${prefix}add Gives you the invite Link for the Bot :)` },
+		{ name: `${prefix}add`, value: `Gives you the invite Link for the Bot :)` },
 	);
 
 	message.channel.send(embed);
