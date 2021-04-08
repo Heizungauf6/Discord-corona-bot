@@ -8,13 +8,11 @@ const { getDistrictByNameAndType } = require("./node_modules/landkreise-deutschl
 
 client.once('ready', () => {
 	console.log('Ready!');
-
-	client.user.setStatus('?help');
-	client.user.setPresence({ activity: { name: '?help' }, status: 'online' })
+	client.user.setStatus('Testing');
+	client.user.setPresence({ activity: { name: 'Testing' }, status: 'online' })
 });
 
 client.login(token);
-
 
 client.on("error", (e) => console.error(e));
 client.on("warn", (e) => console.warn(e));
@@ -52,8 +50,6 @@ client.on('message', async message => {
 
 	if (command === 'in') {
 
-		const Filter = (reaction, user) => user.id == message.author.id;
-
 		if (!args.length) {
 			return message.channel.send(`Du hast keinen Landkreis angegeben, ${message.author}!`);
 		}
@@ -82,13 +78,42 @@ client.on('message', async message => {
 			.setFooter('📈 Diagram 🚫 Maßnahmen')
 			.setTimestamp(); 
 
-		message.channel.send(embed).then(sentEmbed => {
+		/* message.channel.send(embed).then(sentEmbed => {
 			sentEmbed.react("📈")
 			sentEmbed.react("🚫")
+			
+		}) */
+
+		let msg = await message.channel.send(embed);
+
+		await msg.react("📈")
+		await msg.react("🚫")
+
+
+		const filter = (reaction, user) => reaction.emoji.name === "📈" && user.id ===message.author.id;
+		const filter1 = (reaction, user) => reaction.emoji.name === "🚫" && user.id ===message.author.id;
+
+
+		const Diagram = msg.createReactionCollector(filter, {time: 60000, dispose: true});
+		const Maßnahmen = msg.createReactionCollector(filter1, {time: 60000, dispose: true});
+
+		Diagram.on("collect", r => {
+			embed.setTitle(`${district.type} ${district.name}, Diagram`);
+			embed.fields = [];
+			embed.setImage('https://media.tenor.com/images/7441e527b2f9334f55310b7c3bcb56a9/tenor.gif')
+			msg.edit(embed);
 		})
 
-
-
+		Maßnahmen.on("collect", r => {
+			embed.setTitle(`${district.type} ${district.name}, Maßnahmen`)
+			embed.fields = [];
+			embed.image = [];
+			embed.addFields(
+				{ name: 'Maßnahmen: ', value: `Testpflicht für alle Reiserückkehrer per Flugzeug \nBund plant zusätzliche Corona-Hilfen für Firmen  \nMehr Tests für Schüler, Lehrer und Kita-Beschäftigte geplant\nRegelmäßige Testangebote`},
+				{ name: 'Quelle: ', value: `ndr.de`}
+			)
+			msg.edit(embed);
+		})
 
 
 
