@@ -8,8 +8,8 @@ const { getDistrictByNameAndType } = require("./node_modules/landkreise-deutschl
 
 client.once('ready', () => {
 	console.log('Ready!');
-	client.user.setStatus('Testing');
-	client.user.setPresence({ activity: { name: 'Testing' }, status: 'online' })
+	client.user.setStatus('?help');
+	client.user.setPresence({ activity: { name: '?help' }, status: 'online' })
 });
 
 client.login(token);
