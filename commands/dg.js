@@ -35,9 +35,31 @@ exports.run = async(client, message, args) => {
     let InValue = await getToday()
     let InValue2 = await getWeek()
 
-    console.log(InValue2.data[`${district.AGS}`].history);
-    console.log(InValue);
+    Weekdata = [InValue2.data[`${district.AGS}`].history[0].weekIncidence, InValue2.data[`${district.AGS}`].history[1].weekIncidence, InValue2.data[`${district.AGS}`].history[2].weekIncidence, InValue2.data[`${district.AGS}`].history[3].weekIncidence, InValue2.data[`${district.AGS}`].history[4].weekIncidence, InValue2.data[`${district.AGS}`].history[5].weekIncidence, InValue2.data[`${district.AGS}`].history[6].weekIncidence]
 
+    const chart = {
+        type: 'bar',
+        data: {
+          labels: ['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5', 'Tag 6', 'Heute'],
+          datasets: [{
+            label: 'Inzidenz',
+            data: Weekdata
+          }
+          ]
+        }
+      }
+
+
+
+      const encodedChart = encodeURIComponent(JSON.stringify(chart));
+      const chartUrl = `https://quickchart.io/chart?c=${encodedChart}`;
+      const embed = new Discord.MessageEmbed()
+        .setColor('#EFFF00')
+        .setTitle(`${district.type} ${district.name}, Diagramm`)
+        .setImage(chartUrl)
+        .setTimestamp(); 
+
+    let msg = await message.channel.send(embed);
 
   }
   exports.config = {
