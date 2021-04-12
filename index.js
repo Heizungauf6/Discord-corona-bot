@@ -18,7 +18,7 @@ fs.readdir("./commands/", (err, files) => {
         client.commands.set(commandName, props);
     });
 });
-    //Events "handler"
+   
     fs.readdir('./events/', (err, files) => {
         if (err) console.log(err);
         files.forEach(file => {

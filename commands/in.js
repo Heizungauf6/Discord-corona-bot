@@ -29,27 +29,23 @@ exports.run = async(client, message, args) => {
         .addFields(
     { name: 'Inzidenz', value:  someint.toFixed(2)},
     { name: 'Quelle', value: `${InValue.meta.source}`})
-        .setFooter('📈 Diagram 🚫 Maßnahmen')
+        .setFooter('📈 Diagram 🚫 Maßnahmen 🗺️ Heatmap')
         .setTimestamp(); 
-
-    /* message.channel.send(embed).then(sentEmbed => {
-        sentEmbed.react("📈")
-        sentEmbed.react("🚫")
-        
-    }) */
 
     let msg = await message.channel.send(embed);
 
     await msg.react("📈")
     await msg.react("🚫")
+    await msg.react("🗺️")
 
 
     const filter = (reaction, user) => reaction.emoji.name === "📈" && user.id === message.author.id;
     const filter1 = (reaction, user) => reaction.emoji.name === "🚫" && user.id === message.author.id;
-
+    const filter2 = (reaction, user) => reaction.emoji.name === "🗺️" && user.id === message.author.id;
 
     const Diagram = msg.createReactionCollector(filter, {time: 60000, dispose: true});
     const Maßnahmen = msg.createReactionCollector(filter1, {time: 60000, dispose: true});
+    const Heatmap = msg.createReactionCollector(filter2, {time: 60000, dispose: true});
 
     Diagram.on("collect", r => {
         embed.setTitle(`${district.type} ${district.name}, Diagram`);
@@ -66,6 +62,13 @@ exports.run = async(client, message, args) => {
             { name: 'Maßnahmen: ', value: `Wir werden alle Sterben`},
             { name: 'Quelle: ', value: `ndr.de`}
         )
+        msg.edit(embed);
+    })
+
+    Heatmap.on("collect", r => {
+        embed.setTitle(`Heatmap`);
+        embed.fields = [];
+        embed.setImage('https://api.corona-zahlen.org/map/districts')
         msg.edit(embed);
     })
 
