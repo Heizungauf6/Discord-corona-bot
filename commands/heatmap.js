@@ -11,5 +11,5 @@ exports.run = (client, message, args) => {
 	message.channel.send(embed);
   }
   exports.config = {
-    aliases: ["heatmap"]
+    aliases: ["heatmap", "Heatmap", "hm", "Hm", "HM"]
   }
