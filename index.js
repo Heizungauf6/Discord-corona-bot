@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const { token } = require('./token.json');
-const { prefix } = require('./config.json');
 fs = require("fs");
 
 
@@ -34,7 +33,8 @@ fs.readdir("./commands/", (err, files) => {
 
 client.once('ready', () => {
 	console.log(client.user.username + ' has successfully booted up.');
-	client.user.setPresence({ activity: { name: `${prefix}help` }, status: 'online' })
+	client.user.setPresence({ activity: { name: '?help' }, status: 'online' })
+    console.log(`Bot is online and running in ${client.guilds.cache.size} servers!`)
 });
 
 client.login(token);
