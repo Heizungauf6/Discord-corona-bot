@@ -159,13 +159,6 @@ exports.run = async (client, message, args) => {
     const Heatmap = msg.createReactionCollector(filter2, {time: 60000, dispose: true});
 
     Diagram.on("collect", async r => {
-
-        let getToday = async () => {
-            let responsetoday = await fetch(`https://api.corona-zahlen.org/districts/${district.AGS}`)
-            let In = await responsetoday.json()
-            return In
-        
-        }
     
         let getWeek = async () => {
             let responseweek = await fetch(`https://api.corona-zahlen.org/districts/${district.AGS}/history/incidence/7`)
@@ -174,8 +167,13 @@ exports.run = async (client, message, args) => {
         
         }
 
-        let InValue = await getToday()
+
         let InValue2 = await getWeek()
+
+        if (InValue2.data == null) {
+            message.channel.send(`Das RKI übermittelt derzeit keine Daten, ${message.author}!`);
+            return;
+          }
     
         Weekdata = [InValue2.data[`${district.AGS}`].history[0].weekIncidence, InValue2.data[`${district.AGS}`].history[1].weekIncidence, InValue2.data[`${district.AGS}`].history[2].weekIncidence, InValue2.data[`${district.AGS}`].history[3].weekIncidence, InValue2.data[`${district.AGS}`].history[4].weekIncidence, InValue2.data[`${district.AGS}`].history[5].weekIncidence, InValue2.data[`${district.AGS}`].history[6].weekIncidence]
     
